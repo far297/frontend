@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Staff</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: "https://kerbau.odaje.biz/getstaff.php",
+                method: "GET",
+                dataType: "json",
+                success: function(data){
+                    var emailList = "";
+                    data.forEach(function(staff) {
+                        try {
+                            var staffObj = JSON.parse(staff);
+                            emailList += '<li class="list-group-item"><a href="secondpage.html?id=' + staffObj.employeeNumber + '">' + staffObj.email + '</a></li>';
+                        } catch (error) {
+                            console.error("Error parsing staff object:", error);
+                        }
+                    });
+                    $('#staff-emails').html(emailList);
+                },
+                error: function(xhr, status, error){
+                    console.error("Failed to load staff data:", error);
+                    alert("Failed to load staff data. Check console for details.");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Project name</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h3>List of Staff Emails</h3>
+        <ul id="staff-emails" class="list-group">
+            <!-- Emails will be inserted here dynamically -->
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <nav class="navbar fixed-bottom navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-text">
+                Front End Programming &copy; 2022
+            </span>
+        </div>
+    </nav>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
